@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc",
+    "build": "tsc --skipLibCheck",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "db:setup": "node scripts/supabase-setup.mjs",
