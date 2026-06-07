@@ -36,10 +36,16 @@ export const crearResena = async (req: Request, res: Response) => {
 
 export const obtenerResenas = async (req: Request, res: Response) => {
   try {
-    const { negocioId } = req.params
-    const resenas = await ResenaService.obtenerResenas(negocioId)
-    res.status(200).json({ success: true, data: resenas })
+    // Forzamos a TypeScript a entender que negocioId viene como string
+    const { negocioId } = req.params as { negocioId: string };
+
+    if (!negocioId) {
+      return res.status(400).json({ success: false, error: 'Faltan datos requeridos' });
+    }
+
+    const resenas = await ResenaService.obtenerResenas(negocioId);
+    res.status(200).json({ success: true, data: resenas });
   } catch (error: any) {
-    res.status(500).json({ success: false, error: 'Error al obtener las reseñas', detail: error.message })
+    res.status(500).json({ success: false, error: 'Error al obtener las reseñas', detail: error.message });
   }
 }
