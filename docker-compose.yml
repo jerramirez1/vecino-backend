@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./Software-Vecino-Backend
+      dockerfile: Dockerfile
+    container_name: vecino-backend
+    ports:
+      - "10000:10000"
+    environment:
+      - PORT=10000
+      - NODE_ENV=production
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./Software-Vecino-Frontend
+      dockerfile: Dockerfile
+    container_name: vecino-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
+      - NEXT_PUBLIC_API_URL=http://backend:10000/api
+    depends_on:
+      - backend
+    restart: unless-stopped
